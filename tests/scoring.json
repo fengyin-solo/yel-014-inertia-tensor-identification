@@ -1,0 +1,178 @@
+{
+  "gate_tests": [
+    "test_outputs.py::test_error_channel_is_stderr_only",
+    "test_outputs.py::test_full_tensor_reconstruction",
+    "test_outputs.py::test_six_experiments_are_refused",
+    "test_outputs.py::test_tolerance_above_upper_bound_is_refused",
+    "test_outputs.py::test_top_level_extra_key_is_refused",
+    "test_outputs.py::test_invalid_utf8_record_is_refused"
+  ],
+  "schema_version": 1,
+  "tests": {
+    "test_outputs.py::test_absent_parent_is_io_failure": {
+      "priority": "recovery",
+      "rationale": "absent parent is io failure；这验证失败、重跑或恢复不变量，失败会造成旧数据和台账不一致。",
+      "weight": 0.025
+    },
+    "test_outputs.py::test_asset_id_rules_are_enforced": {
+      "priority": "supporting",
+      "rationale": "asset id rules are enforced；这补充验证外围业务约束，失败会降低交付完整性和可运维性。",
+      "weight": 0.01
+    },
+    "test_outputs.py::test_axis_check_shape_is_strict": {
+      "priority": "schema",
+      "rationale": "axis check shape is strict；这验证结构、类型或序列化外观，失败会使下游无法稳定消费结果。",
+      "weight": 0.015
+    },
+    "test_outputs.py::test_axis_mapping_and_one_bad_check_are_recovered": {
+      "priority": "core",
+      "rationale": "axis mapping and one bad check are recovered；这是任务的主交付路径，失败意味着核心业务结果不可用。",
+      "weight": 0.1
+    },
+    "test_outputs.py::test_axis_order_matches_moments": {
+      "priority": "core",
+      "rationale": "axis order matches moments；这是任务的主交付路径，失败意味着核心业务结果不可用。",
+      "weight": 0.1
+    },
+    "test_outputs.py::test_bad_input_preserves_existing_result": {
+      "priority": "recovery",
+      "rationale": "bad input preserves existing result；这验证失败、重跑或恢复不变量，失败会造成旧数据和台账不一致。",
+      "weight": 0.025
+    },
+    "test_outputs.py::test_boolean_is_not_a_number": {
+      "priority": "boundary",
+      "rationale": "boolean is not a number；这验证公开边界和拒收口径，失败会产生越界输入或错误放行。",
+      "weight": 0.019
+    },
+    "test_outputs.py::test_duplicate_key_is_refused": {
+      "priority": "boundary",
+      "rationale": "duplicate key is refused；这验证公开边界和拒收口径，失败会产生越界输入或错误放行。",
+      "weight": 0.019
+    },
+    "test_outputs.py::test_experiment_extra_key_is_refused": {
+      "priority": "boundary",
+      "rationale": "experiment extra key is refused；这验证公开边界和拒收口径，失败会产生越界输入或错误放行。",
+      "weight": 0.019
+    },
+    "test_outputs.py::test_inertia_keys_have_fixed_order": {
+      "priority": "schema",
+      "rationale": "inertia keys have fixed order；这验证结构、类型或序列化外观，失败会使下游无法稳定消费结果。",
+      "weight": 0.015
+    },
+    "test_outputs.py::test_non_positive_definite_tensor_is_refused": {
+      "priority": "boundary",
+      "rationale": "non positive definite tensor is refused；这验证公开边界和拒收口径，失败会产生越界输入或错误放行。",
+      "weight": 0.019
+    },
+    "test_outputs.py::test_one_corrupted_experiment_is_excluded_uniquely": {
+      "priority": "supporting",
+      "rationale": "one corrupted experiment is excluded uniquely；这补充验证外围业务约束，失败会降低交付完整性和可运维性。",
+      "weight": 0.01
+    },
+    "test_outputs.py::test_output_is_compact_with_one_lf": {
+      "priority": "schema",
+      "rationale": "output is compact with one lf；这验证结构、类型或序列化外观，失败会使下游无法稳定消费结果。",
+      "weight": 0.015
+    },
+    "test_outputs.py::test_output_key_order_is_exact": {
+      "priority": "schema",
+      "rationale": "output key order is exact；这验证结构、类型或序列化外观，失败会使下游无法稳定消费结果。",
+      "weight": 0.014
+    },
+    "test_outputs.py::test_output_tail_key_order_is_exact": {
+      "priority": "schema",
+      "rationale": "output tail key order is exact；这验证结构、类型或序列化外观，失败会使下游无法稳定消费结果。",
+      "weight": 0.014
+    },
+    "test_outputs.py::test_principal_axes_are_orthonormal": {
+      "priority": "core",
+      "rationale": "principal axes are orthonormal；这是任务的主交付路径，失败意味着核心业务结果不可用。",
+      "weight": 0.1
+    },
+    "test_outputs.py::test_principal_moments_are_ascending": {
+      "priority": "core",
+      "rationale": "principal moments are ascending；这是任务的主交付路径，失败意味着核心业务结果不可用。",
+      "weight": 0.1
+    },
+    "test_outputs.py::test_rank_deficient_experiments_are_refused": {
+      "priority": "boundary",
+      "rationale": "rank deficient experiments are refused；这验证公开边界和拒收口径，失败会产生越界输入或错误放行。",
+      "weight": 0.019
+    },
+    "test_outputs.py::test_rank_failure_is_reported_as_bad_model": {
+      "priority": "supporting",
+      "rationale": "rank failure is reported as bad model；这补充验证外围业务约束，失败会降低交付完整性和可运维性。",
+      "weight": 0.01
+    },
+    "test_outputs.py::test_refusal_has_no_traceback": {
+      "priority": "boundary",
+      "rationale": "refusal has no traceback；这验证公开边界和拒收口径，失败会产生越界输入或错误放行。",
+      "weight": 0.019
+    },
+    "test_outputs.py::test_repeat_is_byte_identical": {
+      "priority": "recovery",
+      "rationale": "repeat is byte identical；这验证失败、重跑或恢复不变量，失败会造成旧数据和台账不一致。",
+      "weight": 0.025
+    },
+    "test_outputs.py::test_residual_above_tolerance_is_refused": {
+      "priority": "boundary",
+      "rationale": "residual above tolerance is refused；这验证公开边界和拒收口径，失败会产生越界输入或错误放行。",
+      "weight": 0.019
+    },
+    "test_outputs.py::test_residual_bound_is_reported": {
+      "priority": "supporting",
+      "rationale": "residual bound is reported；这补充验证外围业务约束，失败会降低交付完整性和可运维性。",
+      "weight": 0.01
+    },
+    "test_outputs.py::test_seven_experiments_are_accepted": {
+      "priority": "core",
+      "rationale": "seven experiments are accepted；这是任务的主交付路径，失败意味着核心业务结果不可用。",
+      "weight": 0.1
+    },
+    "test_outputs.py::test_status_is_complete": {
+      "priority": "supporting",
+      "rationale": "status is complete；这补充验证外围业务约束，失败会降低交付完整性和可运维性。",
+      "weight": 0.01
+    },
+    "test_outputs.py::test_success_is_quiet": {
+      "priority": "supporting",
+      "rationale": "success is quiet；这补充验证外围业务约束，失败会降低交付完整性和可运维性。",
+      "weight": 0.01
+    },
+    "test_outputs.py::test_three_corrupted_experiments_are_excluded_uniquely": {
+      "priority": "core",
+      "rationale": "three corrupted experiments are excluded uniquely；这是任务的主交付路径，失败意味着核心业务结果不可用。",
+      "weight": 0.1
+    },
+    "test_outputs.py::test_tied_axis_mapping_is_bad_model": {
+      "priority": "supporting",
+      "rationale": "tied axis mapping is bad model；这补充验证外围业务约束，失败会降低交付完整性和可运维性。",
+      "weight": 0.01
+    },
+    "test_outputs.py::test_tolerance_minimum_is_accepted": {
+      "priority": "boundary",
+      "rationale": "tolerance minimum is accepted；这验证公开边界和拒收口径，失败会产生越界输入或错误放行。",
+      "weight": 0.019
+    },
+    "test_outputs.py::test_vector_must_have_three_finite_numbers[alpha_rad_s2]": {
+      "priority": "supporting",
+      "rationale": "vector must have three finite numbers；这补充验证外围业务约束，失败会降低交付完整性和可运维性。",
+      "weight": 0.01
+    },
+    "test_outputs.py::test_vector_must_have_three_finite_numbers[omega_rad_s]": {
+      "priority": "supporting",
+      "rationale": "vector must have three finite numbers；这补充验证外围业务约束，失败会降低交付完整性和可运维性。",
+      "weight": 0.01
+    },
+    "test_outputs.py::test_vector_must_have_three_finite_numbers[torque_nm]": {
+      "priority": "supporting",
+      "rationale": "vector must have three finite numbers；这补充验证外围业务约束，失败会降低交付完整性和可运维性。",
+      "weight": 0.01
+    }
+  },
+  "weight_policy": {
+    "basis": "business_priority",
+    "core_min_share": 0.5,
+    "version": 1
+  }
+}
