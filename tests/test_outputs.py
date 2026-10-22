@@ -176,7 +176,7 @@ def test_tolerance_above_upper_bound_is_refused(tmp_path):
 
 
 def test_top_level_extra_key_is_refused(tmp_path):
-    """题面：「根层级固定为下面三个字段。」"""
+    """题面：「台架交来的记录只接受 UTF-8 文本。根层级固定为下面四个字段。」"""
     payload = record()
     payload["axis_order"] = ["x", "y", "z"]
     result, _, output = run(tmp_path, payload)
@@ -230,6 +230,21 @@ def test_asset_id_rules_are_enforced(tmp_path):
     payload["asset_id"] = " RIG-14 "
     result, _, output = run(tmp_path, payload)
     assert result.returncode == 1 and result.stderr == "运行拒收: BAD_INPUT\n" and not output.exists()
+    accepted = []
+    for index, identifier in enumerate(("A1", "A" * 48), 1):
+        case = tmp_path / f"case-a{index}"
+        case.mkdir()
+        payload["asset_id"] = identifier
+        accepted.append(run(case, payload))
+    rejected = []
+    for index, identifier in enumerate(("A", "A" * 49), 1):
+        case = tmp_path / f"case-b{index}"
+        case.mkdir()
+        payload["asset_id"] = identifier
+        rejected.append(run(case, payload))
+    assert all(result.returncode == 0 and output.is_file() for result, _, output in accepted)
+    assert all(result.returncode == 1 and result.stderr == "运行拒收: BAD_INPUT\n" and not output.exists()
+               for result, _, output in rejected)
 
 
 def test_output_key_order_is_exact(tmp_path):
@@ -362,7 +377,7 @@ def test_axis_mapping_and_one_bad_check_are_recovered(tmp_path):
 
 
 def test_one_corrupted_experiment_is_excluded_uniquely(tmp_path):
-    """题面：「该最小删除数不得大于 3，且达到它的删除组合必须唯一。」"""
+    """题面：「六元方程的可解性要求试验矩阵达到满秩。从删除零组开始，取能让其余试验全部落在容差内的最少删除数。达到最小删除数的组合必须唯一。输出记录保留被采用试验行的最大绝对残差，其上限正是 `tolerance`。」"""
     result, _, output = run(tmp_path, record(corrupt_experiments=1))
     document = json.loads(output.read_text(encoding="utf-8"))
     assert result.returncode == 0
@@ -388,7 +403,7 @@ def test_axis_check_shape_is_strict(tmp_path):
 
 
 def test_tied_axis_mapping_is_bad_model(tmp_path):
-    """题面：「必须恰有一个置换获得最高支持数。」"""
+    """题面：「`axis_checks` 有 4 到 6 项，每项恰好有 `body` 与 `observed` 两个三分量实数向量。这些配对读数来自一次未交付的整数坐标换基，至多一对可能因记录失配而不可用。可用的每一对都满足 `observed = A * body`，其中 `A` 是行列式为 `1` 或 `-1` 的同一个矩阵。最高支持数对应的矩阵必须唯一。」"""
     payload = record()
     payload["axis_checks"] = [
         {"body": [1.0, 1.0, 1.0], "observed": [1.0, 1.0, 1.0]}
@@ -399,7 +414,7 @@ def test_tied_axis_mapping_is_bad_model(tmp_path):
 
 
 def test_residual_bound_is_reported(tmp_path):
-    """题面：「所有实验行中最大的绝对方程残差记作 `maximum_residual_nm`，其上限正是 `tolerance`。」"""
+    """题面：「六元方程的可解性要求试验矩阵达到满秩。从删除零组开始，取能让其余试验全部落在容差内的最少删除数。达到最小删除数的组合必须唯一。输出记录保留被采用试验行的最大绝对残差，其上限正是 `tolerance`。」"""
     result, _, output = run(tmp_path, record())
     residual = json.loads(output.read_text(encoding="utf-8"))["maximum_residual_nm"]
     assert result.returncode == 0 and residual <= 1e-8
